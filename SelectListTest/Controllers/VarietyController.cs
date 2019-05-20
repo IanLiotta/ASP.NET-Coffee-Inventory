@@ -10,39 +10,39 @@ using SelectListTest.Models;
 
 namespace SelectListTest.Controllers
 {
-    public class VendorController : Controller
+    public class VarietyController : Controller
     {
         private readonly InventoryDbContext _context;
 
-        public VendorController(InventoryDbContext context)
+        public VarietyController(InventoryDbContext context)
         {
             _context = context;
         }
-        // GET: Vendor/List
+        // GET: Variety/List
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VendorModel>>> List()
+        public async Task<ActionResult<IEnumerable<VarietyModel>>> List()
         {
-            return await _context.Vendors.ToListAsync();
+            return await _context.Varieties.ToListAsync();
         }
-        // GET: Vendor
+        // GET: Variety
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Vendor/Details/5
+        // GET: Variety/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Vendor/Create
+        // GET: Variety/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Vendor/Create
+        // POST: Variety/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -59,13 +59,13 @@ namespace SelectListTest.Controllers
             }
         }
 
-        // GET: Vendor/Edit/5
+        // GET: Variety/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Vendor/Edit/5
+        // POST: Variety/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -82,13 +82,13 @@ namespace SelectListTest.Controllers
             }
         }
 
-        // GET: Vendor/Delete/5
+        // GET: Variety/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Vendor/Delete/5
+        // POST: Variety/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
