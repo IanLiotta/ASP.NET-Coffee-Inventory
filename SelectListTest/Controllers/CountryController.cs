@@ -4,11 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SelectListTest.Data;
+using SelectListTest.Models;
 
 namespace SelectListTest.Controllers
 {
     public class CountryController : Controller
     {
+        private readonly InventoryDbContext _context;
+
+        public CountryController(InventoryDbContext context)
+        {
+            _context = context;
+        }
+        // GET: Country/List
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CountryModel>>> List()
+        {
+            return await _context.Countries.ToListAsync();
+        }
         // GET: Country
         public ActionResult Index()
         {
