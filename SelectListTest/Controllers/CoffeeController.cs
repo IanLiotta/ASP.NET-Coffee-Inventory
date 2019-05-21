@@ -23,8 +23,7 @@ namespace SelectListTest.Controllers
         public async Task<IActionResult> Index()
         {
             List<CoffeeViewModel> lcvm = new List<CoffeeViewModel>();
-            List<CoffeeModel> coffeeList = new List<CoffeeModel>();
-            coffeeList = await _context.Coffees.ToListAsync();
+            List<CoffeeModel> coffeeList = await _context.Coffees.ToListAsync();
             foreach (var c in coffeeList)
             {
                 _context.Entry(c).Reference("Country").Load();

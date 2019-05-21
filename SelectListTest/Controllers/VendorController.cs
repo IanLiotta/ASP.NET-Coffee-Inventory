@@ -25,15 +25,17 @@ namespace SelectListTest.Controllers
             return await _context.Vendors.ToListAsync();
         }
         // GET: Vendor
-        public ActionResult Index()
+        public async Task<ActionResult<IEnumerable<VendorModel>>> Index()
         {
-            return View();
+            var vendorList = await _context.Vendors.ToListAsync();
+            return View(vendorList);
         }
 
         // GET: Vendor/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var vendor = _context.Vendors.FirstOrDefault(i => i.Id == id);
+            return View(vendor);
         }
 
         // GET: Vendor/Create
@@ -45,12 +47,12 @@ namespace SelectListTest.Controllers
         // POST: Vendor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(VendorModel newVendor)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                _context.Add(newVendor);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -62,18 +64,19 @@ namespace SelectListTest.Controllers
         // GET: Vendor/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var vendor = _context.Vendors.FirstOrDefault(i => i.Id == id);
+            return View(vendor);
         }
 
         // POST: Vendor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(VendorModel vendor)
         {
             try
             {
-                // TODO: Add update logic here
-
+                _context.Vendors.Update(vendor);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -85,18 +88,19 @@ namespace SelectListTest.Controllers
         // GET: Vendor/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var vendor = _context.Vendors.FirstOrDefault(i => i.Id == id);
+            return View(vendor);
         }
 
         // POST: Vendor/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(VendorModel vendor)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                _context.Vendors.Remove(vendor);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
