@@ -1,4 +1,4 @@
-﻿@model SelectListTest.Models.CoffeeModel
+﻿@model SelectListTest.Models.CoffeeViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -12,27 +12,27 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Country)
+            @Html.DisplayNameFor(model => model.Item.Country)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Country)
+            @Html.DisplayFor(model => model.Item.Country.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Variety)
+            @Html.DisplayNameFor(model => model.Item.Variety)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Variety)
+            @Html.DisplayFor(model => model.Item.Variety.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TasteNotes)
+            @Html.DisplayNameFor(model => model.Item.TasteNotes)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TasteNotes)
+            @Html.DisplayFor(model => model.Item.TasteNotes)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Item.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

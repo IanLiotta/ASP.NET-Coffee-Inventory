@@ -43,8 +43,6 @@
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: {
-                ttl: 0,
-                thumbprint: "xyz",
                 url: "/Country/List",
                 filter: function (results) {
                     var list = [];
@@ -69,8 +67,6 @@
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: {
-                ttl: 0,
-                thumbprint: "xyz",
                 url: "/Variety/List",
                 filter: function (results) {
                     var list = [];

@@ -47,14 +47,15 @@ namespace SelectListTest.Controllers
                 return NotFound();
             }
 
-            var coffeeModel = await _context.Coffees
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (coffeeModel == null)
+            CoffeeViewModel cvm = new CoffeeViewModel();
+            cvm.Item = await _context.Coffees.FirstOrDefaultAsync(m => m.Id == id);
+            if (cvm == null)
             {
                 return NotFound();
             }
-
-            return View(coffeeModel);
+            _context.Entry(cvm.Item).Reference("Country").Load();
+            _context.Entry(cvm.Item).Reference("Variety").Load();
+            return View(cvm);
         }
 
         // GET: Coffee/Create
@@ -115,8 +116,6 @@ namespace SelectListTest.Controllers
             }
             _context.Entry(CoffeeVM.Item).Reference(c => c.Country).Load();
             _context.Entry(CoffeeVM.Item).Reference(v => v.Variety).Load();
-            CoffeeVM.Countries = new SelectList(await _context.Countries.ToListAsync(), "Id", "Name");
-            CoffeeVM.Varieties = new SelectList(await _context.Varieties.ToListAsync(), "Id", "Name");
             return View(CoffeeVM);
         }
 
@@ -136,8 +135,18 @@ namespace SelectListTest.Controllers
             {
                 try
                 {
-                    cvm.Item.Country = _context.Countries.Find(cvm.Item.Country.Id);
-                    cvm.Item.Variety = _context.Varieties.Find(cvm.Item.Variety.Id);
+                    CountryModel newCountry = _context.Countries.FirstOrDefault(c => c.Name == cvm.Item.Country.Name) ?? new CountryModel(null, cvm.Item.Country.Name);
+                    if (newCountry.Id == null)
+                    {
+                        _context.Add(newCountry);
+                    }
+                    VarietyModel newVariety = _context.Varieties.FirstOrDefault(v => v.Name == cvm.Item.Variety.Name) ?? new VarietyModel(null, cvm.Item.Variety.Name);
+                    if (newVariety.Id == null)
+                    {
+                        _context.Add(newVariety);
+                    }
+                    cvm.Item.Country = newCountry;
+                    cvm.Item.Variety = newVariety;
                     _context.Update(cvm.Item);
                     await _context.SaveChangesAsync();
                 }
@@ -165,15 +174,15 @@ namespace SelectListTest.Controllers
                 return NotFound();
             }
 
-            var coffeeModel = await _context.Coffees
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (coffeeModel == null)
+            var cvm = new CoffeeViewModel();
+            cvm.Item = await _context.Coffees.FirstOrDefaultAsync(m => m.Id == id);
+            if (cvm == null)
             {
                 return NotFound();
             }
-            _context.Entry(coffeeModel).Reference("Country").Load();
-            _context.Entry(coffeeModel).Reference("Variety").Load();
-            return View(coffeeModel);
+            _context.Entry(cvm.Item).Reference("Country").Load();
+            _context.Entry(cvm.Item).Reference("Variety").Load();
+            return View(cvm);
         }
 
         // POST: Coffee/Delete/5
