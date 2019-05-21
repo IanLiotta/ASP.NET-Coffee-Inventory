@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelectListTest.Data;
@@ -9,19 +10,22 @@ using SelectListTest.Data;
 namespace SelectListTest.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20190519180540_Inital")]
-    partial class Inital
+    [Migration("20190521195809_ReInit")]
+    partial class ReInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SelectListTest.Models.CoffeeModel", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CountryId");
 
@@ -40,8 +44,9 @@ namespace SelectListTest.Migrations
 
             modelBuilder.Entity("SelectListTest.Models.CountryModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -53,13 +58,16 @@ namespace SelectListTest.Migrations
             modelBuilder.Entity("SelectListTest.Models.InventoryModel", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CoffeeId");
 
-                    b.Property<decimal>("LbsOnHand");
+                    b.Property<decimal>("LbsOnHand")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PricePerLbs");
+                    b.Property<decimal>("PricePerLbs")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("VendorId");
 
@@ -72,10 +80,24 @@ namespace SelectListTest.Migrations
                     b.ToTable("Inventory");
                 });
 
-            modelBuilder.Entity("SelectListTest.Models.VarietyModel", b =>
+            modelBuilder.Entity("SelectListTest.Models.RoastModel", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roasts");
+                });
+
+            modelBuilder.Entity("SelectListTest.Models.VarietyModel", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -87,11 +109,13 @@ namespace SelectListTest.Migrations
             modelBuilder.Entity("SelectListTest.Models.VendorModel", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

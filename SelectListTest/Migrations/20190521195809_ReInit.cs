@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SelectListTest.Migrations
 {
-    public partial class Inital : Migration
+    public partial class ReInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +12,7 @@ namespace SelectListTest.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -20,11 +21,24 @@ namespace SelectListTest.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roasts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roasts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Varieties",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -37,8 +51,8 @@ namespace SelectListTest.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -51,7 +65,7 @@ namespace SelectListTest.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CountryId = table.Column<int>(nullable: true),
                     VarietyId = table.Column<int>(nullable: true),
                     TasteNotes = table.Column<string>(nullable: true)
@@ -78,11 +92,11 @@ namespace SelectListTest.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CoffeeId = table.Column<int>(nullable: true),
                     VendorId = table.Column<int>(nullable: true),
-                    PricePerLbs = table.Column<decimal>(nullable: false),
-                    LbsOnHand = table.Column<decimal>(nullable: false)
+                    PricePerLbs = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    LbsOnHand = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,6 +140,9 @@ namespace SelectListTest.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Inventory");
+
+            migrationBuilder.DropTable(
+                name: "Roasts");
 
             migrationBuilder.DropTable(
                 name: "Coffees");

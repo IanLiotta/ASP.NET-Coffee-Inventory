@@ -18,5 +18,6 @@ namespace SelectListTest.Data
         public DbSet<CoffeeModel> Coffees { get; set; }
         public DbSet<VendorModel> Vendors { get; set; }
         public DbSet<InventoryModel> Inventory { get; set; }
+        public DbSet<SelectListTest.Models.RoastModel> Roasts { get; set; }
     }
 }
