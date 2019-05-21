@@ -18,6 +18,7 @@ namespace SelectListTest.Controllers
         {
             _context = context;
         }
+     
         // GET: Country/List
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CountryModel>>> List()
