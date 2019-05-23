@@ -22,7 +22,17 @@ namespace SelectListTest.Controllers
         // GET: Inventory
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Inventory.ToListAsync());
+            var fullInventory = await _context.Inventory.Select(s => new InventoryViewModel
+            {
+                ItemId = s.Id,
+                CoffeeFullName = $"{s.Coffee.Country.Name} {s.Coffee.Variety.Name}",
+                VendorName = s.Vendor.Name,
+                RoastName = s.Roast.Name,
+                PricePerLbs = s.PricePerLbs,
+                LbsOnHand = s.LbsOnHand
+            })
+                .ToListAsync();
+            return View(fullInventory);
         }
 
         // GET: Inventory/Details/5
@@ -56,7 +66,8 @@ namespace SelectListTest.Controllers
             InventoryViewModel ivm = new InventoryViewModel
             {
                 Coffees = new SelectList(coffees, "Id", "coffeeName"),
-                Vendors = new SelectList(_context.Vendors.ToList(), "Id", "Name")
+                Vendors = new SelectList(_context.Vendors.ToList(), "Id", "Name"),
+                Roasts = new SelectList(_context.Roasts.ToList(), "Id", "Name")
             };
             return View(ivm);
         }
@@ -70,13 +81,16 @@ namespace SelectListTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                ivm.Item.Coffee = _context.Coffees.Find(ivm.Item.Coffee.Id);
-                _context.Entry(ivm.Item.Coffee).Reference("Country").Load();
-                _context.Entry(ivm.Item.Coffee).Reference("Variety").Load();
-                ivm.Item.Vendor = _context.Vendors.Find(ivm.Item.Vendor.Id);
-                ivm.Item.Vendor.Name = _context.Entry(ivm.Item.Vendor).Property(i => i.Name).CurrentValue;
+                InventoryModel newItem = new InventoryModel
+                {
+                    Coffee = _context.Coffees.Find(ivm.CoffeeId),
+                    Vendor = _context.Vendors.Find(ivm.VendorId),
+                    Roast = _context.Roasts.Find(ivm.RoastId),
+                    PricePerLbs = ivm.PricePerLbs,
+                    LbsOnHand = ivm.LbsOnHand
+                };
             
-                _context.Add(ivm.Item);
+                _context.Add(newItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

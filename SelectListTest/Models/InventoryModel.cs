@@ -12,6 +12,7 @@ namespace SelectListTest.Models
         public int Id { get; set; }
         public CoffeeModel Coffee { get; set; }
         public VendorModel Vendor { get; set; }
+        public RoastModel Roast { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal PricePerLbs { get; set; }
         [Column(TypeName = "decimal(18,2)")]
