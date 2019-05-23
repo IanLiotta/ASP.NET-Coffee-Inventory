@@ -46,7 +46,19 @@ namespace SelectListTest.Controllers
         // GET: Inventory/Create
         public IActionResult Create()
         {
-            return View();
+            var coffees = _context.Coffees
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    coffeeName = $"{s.Country.Name} {s.Variety.Name}",
+                })
+                .ToList();
+            InventoryViewModel ivm = new InventoryViewModel
+            {
+                Coffees = new SelectList(coffees, "Id", "coffeeName"),
+                Vendors = new SelectList(_context.Vendors.ToList(), "Id", "Name")
+            };
+            return View(ivm);
         }
 
         // POST: Inventory/Create
@@ -54,15 +66,21 @@ namespace SelectListTest.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PricePerLbs,LbsOnHand")] InventoryModel inventoryModel)
+        public async Task<IActionResult> Create(InventoryViewModel ivm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(inventoryModel);
+                ivm.Item.Coffee = _context.Coffees.Find(ivm.Item.Coffee.Id);
+                _context.Entry(ivm.Item.Coffee).Reference("Country").Load();
+                _context.Entry(ivm.Item.Coffee).Reference("Variety").Load();
+                ivm.Item.Vendor = _context.Vendors.Find(ivm.Item.Vendor.Id);
+                ivm.Item.Vendor.Name = _context.Entry(ivm.Item.Vendor).Property(i => i.Name).CurrentValue;
+            
+                _context.Add(ivm.Item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(inventoryModel);
+            return View(ivm);
         }
 
         // GET: Inventory/Edit/5

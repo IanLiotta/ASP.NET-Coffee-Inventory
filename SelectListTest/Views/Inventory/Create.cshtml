@@ -1,4 +1,4 @@
-﻿@model SelectListTest.Models.InventoryModel
+﻿@model SelectListTest.Models.InventoryViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,14 +13,23 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PricePerLbs" class="control-label"></label>
-                <input asp-for="PricePerLbs" class="form-control" />
-                <span asp-validation-for="PricePerLbs" class="text-danger"></span>
+                <label asp-for="Item.Coffee" class="control-label"></label>
+                <select asp-for="Item.Coffee.Id" asp-items="Model.Coffees" class="form-control"></select>
             </div>
             <div class="form-group">
-                <label asp-for="LbsOnHand" class="control-label"></label>
-                <input asp-for="LbsOnHand" class="form-control" />
-                <span asp-validation-for="LbsOnHand" class="text-danger"></span>
+                <label asp-for="Item.Vendor" class="control-label"></label>
+                <select asp-for="Item.Vendor.Id" asp-items="Model.Vendors" class="form-control"></select>
+                <input type="hidden" value="dummy" name="Item.Vendor.Name" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.PricePerLbs" class="control-label"></label>
+                <input asp-for="Item.PricePerLbs" class="form-control" />
+                <span asp-validation-for="Item.PricePerLbs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.LbsOnHand" class="control-label"></label>
+                <input asp-for="Item.LbsOnHand" class="form-control" />
+                <span asp-validation-for="Item.LbsOnHand" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
