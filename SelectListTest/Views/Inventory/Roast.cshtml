@@ -1,0 +1,55 @@
+﻿@model SelectListTest.Models.InventoryViewModel
+
+@{
+    ViewData["Title"] = "Roast";
+}
+
+<h1>Roast</h1>
+
+<h4>InventoryModel</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.CoffeeFullName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.CoffeeFullName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.VendorName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.VendorName)
+    </dd>
+</dl>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Roast">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ItemId" />
+            <input type="hidden" asp-for="CoffeeId" />
+            <input type="hidden" asp-for="VendorId" />
+            <input type="hidden" asp-for="PricePerLbs" />
+            <div class="form-group">
+                <label asp-for="RoastName" class="control-label"></label>
+                <select asp-for="RoastId" asp-items="Model.Roasts" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label value="Amount to Roast" class="control-label"></label>
+                <input asp-for="LbsOnHand" class="form-control" />
+                <span asp-validation-for="LbsOnHand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
