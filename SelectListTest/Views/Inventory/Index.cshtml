@@ -4,12 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
+<div class="panel fg-gradient table-responsive">
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table panel">
     <thead>
         <tr>
             <th>
@@ -48,7 +49,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.LbsOnHand)
             </td>
-            <td>
+            <td class="d-none d-md-block">
                 <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
@@ -61,6 +62,21 @@
                 }
             </td>
         </tr>
+        <tr class="d-md-none d-table-row">
+            <td colspan="5">
+                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
+                @{
+                    if (item.RoastId == 1)
+                    {
+                        @:|
+                        <a asp-action="Roast" asp-route-id="@item.ItemId">Roast</a>
+                    }
+                }
+            </td>
+        </tr>
 }
     </tbody>
 </table>
+</div>
