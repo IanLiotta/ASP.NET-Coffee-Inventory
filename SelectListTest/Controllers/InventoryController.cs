@@ -27,6 +27,7 @@ namespace SelectListTest.Controllers
                 ItemId = s.Id,
                 CoffeeFullName = $"{s.Coffee.Country.Name} {s.Coffee.Variety.Name}",
                 VendorName = s.Vendor.Name,
+                RoastId = s.Roast.Id,
                 RoastName = s.Roast.Name,
                 PricePerLbs = s.PricePerLbs,
                 LbsOnHand = s.LbsOnHand
@@ -233,7 +234,7 @@ namespace SelectListTest.Controllers
                 RoastName = roastMe.Roast.Name,
                 LbsOnHand = roastMe.LbsOnHand,
                 PricePerLbs = roastMe.PricePerLbs,
-                Roasts = new SelectList(await _context.Roasts.ToListAsync(), "Id", "Name")
+                Roasts = new SelectList(await _context.Roasts.Where(c => c.Id != 1).ToListAsync(), "Id", "Name")
             };
             return View(ivm);
         }
@@ -256,10 +257,13 @@ namespace SelectListTest.Controllers
                         //If we roasted all our green coffee, remove it from the inventory
                         if(source.LbsOnHand <= 0)
                         {
-                            _context.Remove(source.Id);
+                            _context.Inventory.Remove(source);
                         }
                         //Check if we have some of this roasted coffee already and update the amount if we do.
-                        var existingRoast = await _context.Inventory.FirstOrDefaultAsync(s => s.Coffee.Id == newRoast.CoffeeId && s.Roast.Id == newRoast.RoastId);
+                        var existingRoast = await _context.Inventory
+                            .Where(s => s.Coffee.Id == newRoast.CoffeeId)
+                            .Where(s => s.Roast.Id == newRoast.RoastId)
+                            .FirstOrDefaultAsync();
                         if (existingRoast != null)
                         {
                             existingRoast.LbsOnHand += newRoast.LbsOnHand;
@@ -280,8 +284,8 @@ namespace SelectListTest.Controllers
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Tried to roast more coffee than you have!";
-                        return View(newRoast);
+                        ViewData["ErrorMessage"] = "Tried to roast more coffee than you have!";
+                        return RedirectToAction(nameof(Roast), newRoast.ItemId);
                     }
                 }
                 catch (DbUpdateConcurrencyException)
