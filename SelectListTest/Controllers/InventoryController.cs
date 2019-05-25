@@ -150,14 +150,9 @@ namespace SelectListTest.Controllers
                 return NotFound();
             }
 
-            var inventoryModel = await _context.Inventory
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (inventoryModel == null)
-            {
-                return NotFound();
-            }
+            var ivm = await PopulateIVM(id);
 
-            return View(inventoryModel);
+            return View(ivm);
         }
 
         // POST: Inventory/Delete/5
