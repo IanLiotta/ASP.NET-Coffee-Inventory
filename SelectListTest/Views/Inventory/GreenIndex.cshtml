@@ -3,9 +3,11 @@
     ViewData["Title"] = "GreenIndex";
 }
 
-<h1>GreenIndex</h1>
+<div class="panel fg-gradient">
 
-<table class="table">
+<h1 class="border-bottom">Roast Coffee</h1>
+
+<table class="table panel-inner">
     <thead>
         <tr>
             <th>
@@ -46,9 +48,10 @@
                     @Html.DisplayFor(modelItem => item.LbsOnHand)
                 </td>
                 <td>
-                    <a asp-action="Roast" asp-route-id="@item.ItemId">Roast</a>
+                    <a asp-action="Roast" asp-route-id="@item.ItemId"><i class="fas fa-fire btn-table"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>

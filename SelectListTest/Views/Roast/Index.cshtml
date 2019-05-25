@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
+<div class="panel fg-gradient">
+<h1 class="border-bottom">Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="montserrat btn p-1">Add Roast</a>
 </p>
-<table class="table">
+<table class="table panel-inner">
     <thead>
         <tr>
             <th>
@@ -19,17 +19,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="d-none d-lg-flex justify-content-end">
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit btn-table"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt btn-table"></i></a>
+                </td>
+            </tr>
+            <tr class="d-lg-none d-table-row">
+                <td colspan="2">
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit btn-table"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt btn-table"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+    </div>

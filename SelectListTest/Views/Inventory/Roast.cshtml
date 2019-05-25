@@ -3,28 +3,29 @@
 @{
     ViewData["Title"] = "Roast";
 }
+<div class="panel narrow fg-gradient">
 
 <h1>Roast</h1>
 
-<h4>InventoryModel</h4>
 <h3>@ViewData["ErrorMessage"]</h3>
 <hr />
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.CoffeeFullName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.CoffeeFullName)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.VendorName)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.VendorName)
-    </dd>
-</dl>
-<div class="row">
-    <div class="col-md-4">
+    <div class="panel-inner">
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoffeeFullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoffeeFullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VendorName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VendorName)
+        </dd>
+    </dl>
+
+    <div>
         <form asp-action="Roast">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ItemId" />
@@ -36,21 +37,22 @@
                 <select asp-for="RoastId" asp-items="Model.Roasts" class="form-control"></select>
             </div>
             <div class="form-group">
-                <label value="Amount to Roast" class="control-label"></label>
+                <label asp-for="LbsOnHand" class="control-label"></label>
                 <input asp-for="LbsOnHand" class="form-control" />
                 <span asp-validation-for="LbsOnHand" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group ">
+                <input type="submit" value="Save" class="btn"/>
+            </div>
+            <div>
+                <a asp-action="Index" class="btn">Back</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+    </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

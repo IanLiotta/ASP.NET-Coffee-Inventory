@@ -4,44 +4,52 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+    <div class="panel fg-gradient table-responsive">
+        <h1 class="montserrat border-bottom">Coffee Types</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Item.Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item.Variety)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TasteNotes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Item.Country.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Item.Variety.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Item.TasteNotes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <p>
+            <a asp-action="Create" class="montserrat btn p-1">Add Coffee</a>
+        </p>
+        <table class="table panel-inner">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Item.Country)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Item.Variety)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TasteNotes)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item.Country.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item.Variety.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item.TasteNotes)
+                        </td>
+                        <td class="d-none d-lg-flex justify-content-end">
+                            <a asp-action="Edit" asp-route-id="@item.Item.Id"><i class="fas fa-edit btn-table"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.Item.Id"><i class="fas fa-trash-alt btn-table"></i></a>
+                        </td>
+                    </tr>
+                    <tr class="d-lg-none d-table-row">
+                        <td colspan="5">
+                            <a asp-action="Edit" asp-route-id="@item.Item.Id"><i class="fas fa-edit btn-table"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.Item.Id"><i class="fas fa-trash-alt btn-table"></i></a>
+                        </td>
+                    </tr>
+                            }
+                </tbody>
+        </table>
+</div>
