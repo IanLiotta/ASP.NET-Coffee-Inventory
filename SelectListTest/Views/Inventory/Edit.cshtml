@@ -1,4 +1,4 @@
-﻿@model SelectListTest.Models.InventoryModel
+﻿@model SelectListTest.Models.InventoryViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,7 +11,19 @@
             <div class="panel-inner">
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ItemId" />
+                    <div class="form-group">
+                        <label asp-for="CoffeeFullName" class="control-label"></label>
+                        <select asp-for="CoffeeId" asp-items="Model.Coffees" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="VendorName" class="control-label"></label>
+                        <select asp-for="VendorId" asp-items="Model.Vendors" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RoastName" class="control-label"></label>
+                        <select asp-for="RoastId" asp-items="Model.Roasts" class="form-control"></select>
+                    </div>
                     <div class="form-group">
                         <label asp-for="PricePerLbs" class="control-label"></label>
                         <input asp-for="PricePerLbs" class="form-control" />

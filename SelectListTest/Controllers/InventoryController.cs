@@ -57,7 +57,7 @@ namespace SelectListTest.Controllers
         // GET: Inventory/Create
         public IActionResult Create()
         {
-            var ivm = GetInventoryViewModel();
+            var ivm = GetIVMLists();
             return View(ivm);
         }
 
@@ -94,12 +94,8 @@ namespace SelectListTest.Controllers
                 return NotFound();
             }
 
-            var inventoryModel = await _context.Inventory.FindAsync(id);
-            if (inventoryModel == null)
-            {
-                return NotFound();
-            }
-            return View(inventoryModel);
+            var ivm = await PopulateIVM(id);
+            return View(ivm);
         }
 
         // POST: Inventory/Edit/5
@@ -107,9 +103,9 @@ namespace SelectListTest.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PricePerLbs,LbsOnHand")] InventoryModel inventoryModel)
+        public async Task<IActionResult> Edit(int id, [Bind("ItemId,CoffeeId,VendorId,RoastId,PricePerLbs,LbsOnHand")] InventoryViewModel ivm)
         {
-            if (id != inventoryModel.Id)
+            if (id != ivm.ItemId)
             {
                 return NotFound();
             }
@@ -118,12 +114,21 @@ namespace SelectListTest.Controllers
             {
                 try
                 {
-                    _context.Update(inventoryModel);
+                    var updated = new InventoryModel
+                    {
+                        Id = ivm.ItemId,
+                        Coffee = _context.Coffees.Find(ivm.CoffeeId),
+                        Vendor = _context.Vendors.Find(ivm.VendorId),
+                        Roast = _context.Roasts.Find(ivm.RoastId),
+                        LbsOnHand = ivm.LbsOnHand,
+                        PricePerLbs = ivm.PricePerLbs
+                    };
+                    _context.Update(updated);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InventoryModelExists(inventoryModel.Id))
+                    if (!InventoryModelExists(id))
                     {
                         return NotFound();
                     }
@@ -134,7 +139,7 @@ namespace SelectListTest.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(inventoryModel);
+            return View(ivm);
         }
 
         // GET: Inventory/Delete/5
@@ -169,24 +174,6 @@ namespace SelectListTest.Controllers
         private bool InventoryModelExists(int id)
         {
             return _context.Inventory.Any(e => e.Id == id);
-        }
-
-        private InventoryViewModel GetInventoryViewModel()
-        {
-            var coffees = _context.Coffees
-                .Select(s => new
-                {
-                    s.Id,
-                    coffeeName = $"{s.Country.Name} {s.Variety.Name}",
-                })
-                .ToList();
-            InventoryViewModel ivm = new InventoryViewModel
-            {
-                Coffees = new SelectList(coffees, "Id", "coffeeName"),
-                Vendors = new SelectList(_context.Vendors.ToList(), "Id", "Name"),
-                Roasts = new SelectList(_context.Roasts.ToList(), "Id", "Name")
-            };
-            return ivm;
         }
 
         //GET: Inventory/GreenIndex
@@ -303,5 +290,65 @@ namespace SelectListTest.Controllers
             }
             return View(newRoast);
         }
+
+        private InventoryViewModel GetIVMLists()
+        {
+            var coffees = _context.Coffees
+                .Select(s => new
+                {
+                    s.Id,
+                    coffeeName = $"{s.Country.Name} {s.Variety.Name}",
+                })
+                .ToList();
+            InventoryViewModel ivm = new InventoryViewModel
+            {
+                Coffees = new SelectList(coffees, "Id", "coffeeName"),
+                Vendors = new SelectList(_context.Vendors.ToList(), "Id", "Name"),
+                Roasts = new SelectList(_context.Roasts.ToList(), "Id", "Name")
+            };
+            return ivm;
+        }
+
+        private async Task<InventoryViewModel> PopulateIVM(int? id)
+        {
+            if(id == null)
+            {
+                return null;
+            }
+            var source = await _context.Inventory
+                .Include("Coffee")
+                .Include("Coffee.Country")
+                .Include("Coffee.Variety")
+                .Include("Vendor")
+                .Include("Roast")
+                .FirstOrDefaultAsync(i => i.Id == id);
+            if (source == null)
+            {
+                return null;
+            }
+            var coffees = _context.Coffees
+                .Select(s => new
+                {
+                    s.Id,
+                    coffeeName = $"{s.Country.Name} {s.Variety.Name}",
+                })
+                .ToList();
+            InventoryViewModel ivm = new InventoryViewModel
+            {
+                ItemId = (int)id,
+                CoffeeId = source.Coffee.Id,
+                CoffeeFullName = $"{source.Coffee.Country.Name} {source.Coffee.Variety.Name}",
+                VendorId = source.Vendor.Id,
+                VendorName = source.Vendor.Name,
+                RoastId = source.Roast.Id,
+                RoastName = source.Roast.Name,
+                LbsOnHand = source.LbsOnHand,
+                PricePerLbs = source.PricePerLbs,
+                Roasts = new SelectList(await _context.Roasts.ToListAsync(), "Id", "Name"),
+                Coffees = new SelectList(coffees, "Id", "coffeeName"),
+                Vendors = new SelectList(await _context.Vendors.ToListAsync(), "Id", "Name")
+            };
+            return ivm;
+        } // end PopulateIVM
     }
 }
