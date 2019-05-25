@@ -215,3 +215,15 @@ h1, h4 {
 nav {
     background-color: #CFA587;
 }
+
+.table thead th {
+    border: none;
+}
+
+.table td {
+    border: none;
+}
+
+.table tr {
+    border-top: 1px silver solid;
+}
