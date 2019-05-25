@@ -3,48 +3,50 @@
 @{
     ViewData["Title"] = "Create";
 }
+    <div class="panel narrow fg-gradient">
+        <h1>Add To Inventory</h1>
 
-<h1>Create</h1>
+        <hr />
+        <div class="panel-inner d-flex justify-content-center">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CoffeeId" class="control-label"></label>
+                    <select asp-for="CoffeeId" asp-items="Model.Coffees" class="form-control"></select>
+                    <a href="../Coffee/Create/"><i class="fas fa-plus"></i> Add Coffee</a>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VendorId" class="control-label"></label>
+                    <select asp-for="VendorId" asp-items="Model.Vendors" class="form-control"></select>
+                    <a href="../Vendor/Create/"><i class="fas fa-plus"></i> Add Vendor</a>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoastId" class="control-label"></label>
+                    <select asp-for="RoastId" asp-items="Model.Roasts" class="form-control"></select>
+                    <a href="../Roast/Create/"><i class="fas fa-plus"></i> Add Roast</a>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PricePerLbs" class="control-label"></label>
+                    <input asp-for="PricePerLbs" class="form-control" />
+                    <span asp-validation-for="PricePerLbs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LbsOnHand" class="control-label"></label>
+                    <input asp-for="LbsOnHand" class="form-control" />
+                    <span asp-validation-for="LbsOnHand" class="text-danger"></span>
+                </div>
+                <div class="form-group btn d-flex justify-content-center">
+                    <input type="submit" value="Create"/>
+                </div>
+                <div>
+                    <a asp-action="Index" class="btn">Back</a>
+                </div>
+            </form>
+            
+        </div>
 
-<h4>InventoryModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CoffeeId" class="control-label"></label>
-                <select asp-for="CoffeeId" asp-items="Model.Coffees" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="VendorId" class="control-label"></label>
-                <select asp-for="VendorId" asp-items="Model.Vendors" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoastId" class="control-label"></label>
-                <select asp-for="RoastId" asp-items="Model.Roasts" class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="PricePerLbs" class="control-label"></label>
-                <input asp-for="PricePerLbs" class="form-control" />
-                <span asp-validation-for="PricePerLbs" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LbsOnHand" class="control-label"></label>
-                <input asp-for="LbsOnHand" class="form-control" />
-                <span asp-validation-for="LbsOnHand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

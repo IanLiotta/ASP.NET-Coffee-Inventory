@@ -5,12 +5,12 @@
 }
 
 <div class="panel fg-gradient table-responsive">
-<h1>Index</h1>
+<h1 class="montserrat border-bottom">Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="montserrat btn p-1">Add To Inventory</a>
 </p>
-<table class="table panel">
+<table class="table panel-inner">
     <thead>
         <tr>
             <th>
@@ -49,29 +49,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.LbsOnHand)
             </td>
-            <td class="d-none d-md-block">
-                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
+            <td class="d-none d-lg-flex">
+                <a asp-action="Edit" asp-route-id="@item.ItemId"><i class="fas fa-edit btn-table"></i></a> 
+                <a asp-action="Delete" asp-route-id="@item.ItemId"><i class="fas fa-trash-alt btn-table"></i></a>
                 @{ 
                     if(item.RoastId == 1)
                     {           
-                      @:|
-                      <a asp-action="Roast" asp-route-id="@item.ItemId">Roast</a>
+                      <a asp-action="Roast" asp-route-id="@item.ItemId"><i class="fas fa-fire btn-table"></i></a>
                     }
                 }
             </td>
         </tr>
-        <tr class="d-md-none d-table-row">
+        <tr class="d-lg-none d-table-row">
             <td colspan="5">
-                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ItemId"><i class="fas fa-edit btn-table"></i></a> 
+                <a asp-action="Delete" asp-route-id="@item.ItemId"><i class="fas fa-trash-alt btn-table"></i></a>
                 @{
                     if (item.RoastId == 1)
                     {
-                        @:|
-                        <a asp-action="Roast" asp-route-id="@item.ItemId">Roast</a>
+                        <a asp-action="Roast" asp-route-id="@item.ItemId"><i class="fas fa-fire btn-table"></i></a>
                     }
                 }
             </td>
