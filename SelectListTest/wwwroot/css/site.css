@@ -189,7 +189,8 @@ input.btn {
 }
 
 footer {
-    background-color: white;
+    background-color: #CFA587;
+    color: black;
 }
 
 h1.border-bottom {
@@ -205,4 +206,12 @@ h1.border-bottom {
 
 h1, h4 {
     font-family: 'Montserrat', sans-serif;
+}
+
+.logo {
+    height: 10rem;
+}
+
+nav {
+    background-color: #CFA587;
 }
